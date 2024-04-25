@@ -69,12 +69,22 @@ git clone <repository-url> ~/.config/nvim/
 | `<kbd>Leader</kbd>+<kbd>sr</kbd>` | Search resume |
 | `<kbd>Leader</kbd>+<kbd>s.</kbd>` | Search recent files |
 | `<kbd>Leader</kbd>+<kbd>Leader</kbd>` | Find existing buffers |
-```
 
 > To see more detailed info, go to `init.lua`.
 
+
+# Acknowledgements
+
+I would like to express my gratitude to the creators and maintainers of all the
+plugins used in this configuration. Your hard work and dedication have greatly
+enhanced the functionality and user experience of Neovim.
+
+A special thanks to
+[kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) for providing a
+solid foundation for this configuration.
+
+
 # License
 
-This project is licensed under the MIT License. Copyright © Nathanael Bonfim.
-
+This project is licensed under the MIT License.
 

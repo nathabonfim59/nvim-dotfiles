@@ -841,7 +841,8 @@ require("lazy").setup({
 			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
 		},
 		opts = {
-			debug = true, -- Enable debugging
+			debug = false, -- Enable debugging
+			context = "buffers",
 			-- See Configuration section for rest
 			mappings = {
 				prompts = {
