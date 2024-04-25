@@ -1,10 +1,12 @@
 # Neovim Configuration
 
-This repository contains my personal Neovim configuration, which is located in the `init.lua` file.
+This repository contains my personal Neovim configuration, which is located in
+the `init.lua` file.
 
 # Getting Started
 
-To use this configuration, clone this repository into your Neovim configuration directory. On a Unix-like system, this directory is usually `~/.config/nvim/`.
+To use this configuration, clone this repository into your Neovim configuration
+directory. On a Unix-like system, this directory is usually `~/.config/nvim/`.
 
 ```bash
 git clone https://github.com/nathabonfim59/nvim-dotfiles ~/.config/nvim/
@@ -35,7 +37,8 @@ git clone https://github.com/nathabonfim59/nvim-dotfiles ~/.config/nvim/
 
 # Keybindings
 
-> **Note:** The leader key is currently set to `<Space>`. You can change it by modifying the line `vim.g.mapleader = " "` in the `init.lua` file.
+> **Note:** The leader key is currently set to `<Space>`. You can change it by
+> modifying the line `vim.g.mapleader = " "` in the `init.lua` file.
 
 ## General Keybindings
 

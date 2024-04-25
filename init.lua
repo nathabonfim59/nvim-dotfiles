@@ -186,6 +186,12 @@ require("lazy").setup({
 				desc = "Git - Preview hunk",
 			},
 			{
+				"<leader>gr",
+				":Gitsigns reset_hunk<CR>",
+				mode = "n",
+				desc = "Git - Reset hunk",
+			},
+			{
 				"<leader>gj",
 				":Gitsigns next_hunk<CR>",
 				mode = "n",
@@ -372,7 +378,11 @@ require("lazy").setup({
 				-- If the `which` command returned a result, LazyGit is installed
 				if result ~= "" then
 					-- Open LazyGit within a terminal in neovim
+					vim.api.nvim_command("tabnew")
 					vim.api.nvim_command("silent terminal lazygit")
+
+					-- Redraw the terminal to fix resizing issue
+					vim.api.nvim_command("redraw!")
 
 					-- Remove line numbers
 					vim.api.nvim_command("set nonumber")
