@@ -248,6 +248,7 @@ require("lazy").setup({
 	-- See `:help gitsigns` to understand what the configuration keys do
 	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
 		"lewis6991/gitsigns.nvim",
+		event = "BufEnter",
 		opts = {
 			signs = {
 				add = { text = "+" },
@@ -255,6 +256,32 @@ require("lazy").setup({
 				delete = { text = "_" },
 				topdelete = { text = "‾" },
 				changedelete = { text = "~" },
+			},
+		},
+		keys = {
+			{
+				"<leader>gs",
+				":Gitsigns stage_hunk<CR>",
+				mode = { "v", "n" },
+				desc = "Git - Stage hunk",
+			},
+			{
+				"<leader>gp",
+				":Gitsigns preview_hunk<CR>",
+				mode = "n",
+				desc = "Git - Preview hunk",
+			},
+			{
+				"<leader>gj",
+				":Gitsigns next_hunk<CR>",
+				mode = "n",
+				desc = "Git - Next hunk",
+			},
+			{
+				"<leader>gk",
+				":Gitsigns prev_hunk<CR>",
+				mode = "n",
+				desc = "Git - Previous hunk",
 			},
 		},
 	},
@@ -302,6 +329,7 @@ require("lazy").setup({
 				["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
 				["<leader>p"] = { name = "Co[P]ilot", _ = "which_key_ignore", mode = { "n", "v" } },
 				["<leader>pc"] = { name = "Co[P]ilot [C]hat", _ = "which_key_ignore", mode = { "n", "v" } },
+				["<leader>g"] = { name = "[G]it", _ = "which_key_ignore", mode = { "n", "v" } },
 			})
 		end,
 	},
