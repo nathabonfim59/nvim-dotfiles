@@ -1,5 +1,8 @@
 # Neovim Configuration
 
+![image](https://github.com/nathabonfim59/nvim-dotfiles/assets/21281852/8b76acab-fa6a-4bbb-86e7-6c2a4d7adea9)
+
+
 This repository contains my personal Neovim configuration, which is located in
 the `init.lua` file.
 
