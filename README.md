@@ -7,7 +7,7 @@ This repository contains my personal Neovim configuration, which is located in t
 To use this configuration, clone this repository into your Neovim configuration directory. On a Unix-like system, this directory is usually `~/.config/nvim/`.
 
 ```bash
-git clone <repository-url> ~/.config/nvim/
+git clone https://github.com/nathabonfim59/nvim-dotfiles ~/.config/nvim/
 ```
 
 # Plugins
