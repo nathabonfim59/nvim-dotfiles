@@ -259,6 +259,19 @@ require("lazy").setup({
 		},
 	},
 
+	{
+		"NeogitOrg/neogit",
+		branch = "nightly",
+		dependencies = {
+			"nvim-lua/plenary.nvim", -- required
+			"sindrets/diffview.nvim", -- optional - Diff integration
+
+			-- Only one of these is needed, not both.
+			"nvim-telescope/telescope.nvim", -- optional
+		},
+		config = true,
+	},
+
 	-- NOTE: Plugins can also be configured to run Lua code when they are loaded.
 	--
 	-- This is often very useful to both group configuration, as well as handle
@@ -287,6 +300,8 @@ require("lazy").setup({
 				["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
 				["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
 				["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
+				["<leader>p"] = { name = "Co[P]ilot", _ = "which_key_ignore", mode = { "n", "v" } },
+				["<leader>pc"] = { name = "Co[P]ilot [C]hat", _ = "which_key_ignore", mode = { "n", "v" } },
 			})
 		end,
 	},
@@ -745,21 +760,178 @@ require("lazy").setup({
 		end,
 	},
 
+	-- Github Copilot
+	{
+		"zbirenbaum/copilot.lua",
+		after = "nvim-cmp",
+		dependencies = { "zbirenbaum/copilot-cmp" },
+		event = { "InsertEnter" },
+		config = function()
+			require("copilot").setup({})
+		end,
+	},
+
+	{
+		"CopilotC-Nvim/CopilotChat.nvim",
+		branch = "canary",
+		dependencies = {
+			{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+		},
+		opts = {
+			debug = true, -- Enable debugging
+			-- See Configuration section for rest
+			mappings = {
+				prompts = {
+					Explain = {
+						mapping = "<leader>pce",
+						description = "AI Explain",
+						mode = "v",
+					},
+					Review = {
+						mapping = "<leader>pcr",
+						description = "AI Review",
+						mode = "v",
+					},
+					Tests = {
+						mapping = "<leader>pct",
+						description = "AI Tests",
+						mode = "v",
+					},
+					Fix = {
+						mapping = "<leader>pcf",
+						description = "AI Fix",
+						mode = "v",
+					},
+					Optimize = {
+						mapping = "<leader>pco",
+						description = "AI Optimize",
+						mode = "v",
+					},
+					Docs = {
+						mapping = "<leader>pcd",
+						description = "AI Documentation",
+						mode = "v",
+					},
+					CommitStaged = {
+						mapping = "<leader>pcc",
+						description = "AI Generate Commit",
+						mode = "v",
+					},
+				},
+			},
+		},
+		keys = {
+			-- Show prompts actions with telescope
+			{
+				"<leader>pca",
+				function()
+					local actions = require("CopilotChat.actions")
+					require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
+				end,
+				desc = "CopilotChat - Prompt actions",
+				mode = { "n", "v" },
+			},
+			{
+				"<leader>pcp",
+				function()
+					require("CopilotChat").toggle({
+						window = {
+							layout = "horizontal",
+						},
+					})
+				end,
+				mode = "n",
+				desc = "Open CopilotChat pane",
+			},
+			{
+				"<leader>pcf",
+				function()
+					require("CopilotChat").toggle({
+						window = {
+							layout = "float",
+							height = 0.8,
+							width = 0.8,
+						},
+					})
+				end,
+				mode = "n",
+				desc = "Open CopilotChat floating",
+			},
+			{
+				"<leader>pci",
+				function()
+					require("CopilotChat").toggle({
+						window = {
+							layout = "float",
+							relative = "cursor",
+							width = 1,
+							height = 0.4,
+							row = 1,
+						},
+					})
+				end,
+				mode = { "n", "v" },
+				desc = "Open CopilotChat inline",
+			},
+			{
+				"<leader>pcq",
+				function()
+					local input = vim.fn.input("Quick Chat: ")
+					if input ~= "" then
+						require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+					end
+				end,
+				desc = "CopilotChat - Quick chat",
+			},
+		},
+		config = function()
+			local chat = require("CopilotChat")
+
+			chat.setup({})
+		end,
+	},
+
+	{
+		"jiaoshijie/undotree",
+		dependencies = "nvim-lua/plenary.nvim",
+		config = true,
+		keys = { -- load the plugin only when using it's keybinding:
+			{
+				"<leader>H",
+				function()
+					require("undotree").toggle()
+				end,
+				mode = "",
+				desc = "Toggle undotree [H]istory",
+			},
+		},
+	},
+
 	{ -- You can easily change to a different colorscheme.
 		-- Change the name of the colorscheme plugin below, and then
 		-- change the command in the config to whatever the name of that colorscheme is.
 		--
 		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-		"folke/tokyonight.nvim",
+		"loctvl842/monokai-pro.nvim",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
 		init = function()
 			-- Load the colorscheme here.
 			-- Like many other themes, this one has different styles, and you could load
 			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-			vim.cmd.colorscheme("tokyonight-night")
+			vim.cmd.colorscheme("monokai-pro-spectrum")
 
-			-- You can configure highlights by doing something like:
-			vim.cmd.hi("Comment gui=none")
+			-- vim.cmd.hi("Comment gui=none")
+			-- vim.cmd.hi("MiniStatuslineModeInsert guibg=#569CD6 guifg=#343434")
+			-- vim.cmd.hi("MiniStatuslineModeNormal guibg=#254455 guifg=#5ad4e6")
+			-- vim.cmd.hi("MiniStatuslineModeNormal guibg=#192D38 guifg=#5ad4e6")
+			vim.cmd.hi("MiniStatuslineModeNormal guibg=#273335 guifg=#5ad4e6")
+			vim.cmd.hi("Beacon guibg=#372d26")
+			-- vim.cmd.hi("MiniStatuslineModeInsert", { bg = c.vscLeftDark, fg = c.vscFront })
+			-- vim.cmd.hi("MiniStatuslineModeVisual", { bg = c.vscLeftDark, fg = c.vscFront })
+			-- vim.cmd.hi("MiniStatuslineModeReplace", { bg = c.vscLeftDark, fg = c.vscFront })
+			-- vim.cmd.hi("MiniStatuslineModeCommand", { bg = c.vscLeftDark, fg = c.vscFront })
+			-- vim.cmd.hi("MiniStatuslineModeOther", { bg = c.vscLeftDark, fg = c.vscFront })
 		end,
 	},
 
