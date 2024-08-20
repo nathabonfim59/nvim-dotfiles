@@ -450,6 +450,45 @@ require("lazy").setup({
 					print("LazyGit is not installed on this system.")
 				end
 			end, { desc = "[G]it - Open Lazy[g]it" })
+
+			-- Open jid (json filter) with toggleterm within neovim
+			vim.keymap.set("n", "<leader>ti", function()
+				local current_file = vim.fn.expand("%:p")
+				local handle = io.popen("which jid")
+
+				if handle == nil then
+					return
+				end
+
+				local result = handle:read("*a")
+				handle:close()
+
+				-- If the `which` command returned a result, jid is installed
+				if result ~= "" then
+					-- Open LazyGit within a terminal in neovim
+					vim.api.nvim_command("tabnew")
+					vim.api.nvim_command("silent terminal jid < '" .. current_file .. "'")
+
+					-- Redraw the terminal to fix resizing issue
+					vim.api.nvim_command("redraw!")
+
+					-- Remove line numbers
+					vim.api.nvim_command("set nonumber")
+					vim.api.nvim_command("set norelativenumber")
+
+					-- Start in insert mode
+					vim.api.nvim_command("startinsert")
+
+					-- When the terminal process exits, close the buffer
+					vim.api.nvim_command("autocmd TermClose <buffer> bd!")
+
+					-- When exit, remove from recent buffers
+					vim.api.nvim_command("autocmd BufLeave <buffer> bd!")
+				else
+					-- If LazyGit is not installed, print a message to the console
+					print("jid is not installed on this system.")
+				end
+			end, { desc = "[T]erminal - Open in j[i]d" })
 		end,
 	},
 
