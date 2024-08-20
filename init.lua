@@ -1016,6 +1016,10 @@ require("lazy").setup({
 			-- vim.cmd.hi("MiniStatuslineModeReplace", { bg = c.vscLeftDark, fg = c.vscFront })
 			-- vim.cmd.hi("MiniStatuslineModeCommand", { bg = c.vscLeftDark, fg = c.vscFront })
 			-- vim.cmd.hi("MiniStatuslineModeOther", { bg = c.vscLeftDark, fg = c.vscFront })
+			--
+			-- From context toggle
+			vim.cmd.hi("TreesitterContextBottom gui=underline guisp=Grey")
+			vim.cmd.hi("TreesitterContextLineNumberBottom gui=underline guisp=Grey")
 		end,
 	},
 
@@ -1037,6 +1041,10 @@ require("lazy").setup({
 			--  - yinq - [Y]ank [I]nside [N]ext [']quote
 			--  - ci'  - [C]hange [I]nside [']quote
 			require("mini.ai").setup({ n_lines = 500 })
+
+
+			-- Highlight the word under the cursor
+			require("mini.cursorword").setup()
 
 			-- Add/delete/replace surroundings (brackets, quotes, etc.)
 			--
