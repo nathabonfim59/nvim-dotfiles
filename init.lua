@@ -1069,6 +1069,9 @@ require("lazy").setup({
 			require("mini.ai").setup({ n_lines = 500 })
 
 
+			-- Git integration
+			require("mini.git").setup()
+
 			-- Highlight the word under the cursor
 			require("mini.cursorword").setup()
 
