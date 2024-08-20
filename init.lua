@@ -245,6 +245,12 @@ require("lazy").setup({
 				mode = "n",
 				desc = "Git - Previous hunk",
 			},
+			{
+				"<leader>gl",
+				":Gitsigns blame_line<CR>",
+				mode = "n",
+				desc = "Git - Blame line",
+			},
 		},
 	},
 
