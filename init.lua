@@ -80,7 +80,49 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagnostic message" })
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+vim.keymap.set("n", "<leader>qd", vim.diagnostic.setloclist, { desc = "Open [d]iagnostic quickfix list" })
+
+local function delete_quickfix_items(start_line, end_line)
+	if vim.fn.getwininfo(vim.api.nvim_get_current_win())[1].quickfix ~= 1 then
+		print("Not in a quickfix window")
+		return
+	end
+
+	local qf_list = vim.fn.getqflist()
+	local items_to_remove = end_line - start_line + 1
+
+	if start_line < 1 or end_line > #qf_list then
+		print("Invalid quickfix range")
+		return
+	end
+
+	for i = start_line, end_line do
+		table.remove(qf_list, start_line)
+	end
+
+	vim.fn.setqflist(qf_list, "r")
+
+	-- Adjust cursor position after deletion
+	local new_pos = math.min(start_line, #qf_list)
+	vim.fn.setpos(".", { 0, new_pos, 1, 0 })
+
+	-- Refresh the quickfix window
+	vim.cmd("cbottom")
+	vim.cmd("copen")
+
+	print(string.format("Deleted %d quickfix item(s)", items_to_remove))
+end
+
+vim.keymap.set("n", "<leader>qD", function()
+	delete_quickfix_items(vim.fn.line("."), vim.fn.line("."))
+end, { desc = "[D]elete current quickfix item" })
+
+-- Visual mode: Delete selected items
+vim.keymap.set("v", "<leader>qd", function()
+	local start_line = vim.fn.line("'<")
+	local end_line = vim.fn.line("'>")
+	delete_quickfix_items(start_line, end_line)
+end, { desc = "[D]elete selected quickfix items" })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -250,6 +292,8 @@ require("lazy").setup({
 				["<leader>p"] = { name = "Co[P]ilot", _ = "which_key_ignore", mode = { "n", "v" } },
 				["<leader>pc"] = { name = "Co[P]ilot [C]hat", _ = "which_key_ignore", mode = { "n", "v" } },
 				["<leader>g"] = { name = "[G]it", _ = "which_key_ignore", mode = { "n", "v" } },
+				["<leader>t"] = { name = "[T]Terminal", _ = "which_key_ignore", mode = { "n", "v" } },
+				["<leader>q"] = { name = "[Q]uickfix Operations", _ = "which_key_ignore", mode = { "n", "v" } },
 			})
 		end,
 	},
