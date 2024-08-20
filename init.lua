@@ -413,6 +413,21 @@ require("lazy").setup({
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "[S]earch [N]eovim files" })
 
+			-- Defines the syntax for CakePHP's .ctp files as PHP
+			vim.cmd([[
+        augroup FiletypeCTP
+        autocmd!
+        autocmd BufEnter *.ctp lua vim.api.nvim_buf_set_option(0, 'syntax', 'php')
+        augroup END
+      ]])
+
+			vim.cmd([[
+        augroup FiletypeCTP
+        autocmd!
+        autocmd BufEnter *.astro lua vim.api.nvim_buf_set_option(0, 'syntax', 'astro')
+        augroup END
+      ]])
+
 			vim.keymap.set("n", "<leader>ct", ":TSContextToggle<CR>", {
 				desc = "Toggle [C]ode Con[t]ext",
 			})
