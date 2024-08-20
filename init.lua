@@ -413,6 +413,10 @@ require("lazy").setup({
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "[S]earch [N]eovim files" })
 
+			vim.keymap.set("n", "<leader>ct", ":TSContextToggle<CR>", {
+				desc = "Toggle [C]ode Con[t]ext",
+			})
+
 			-- Open LazyGit with toggleterm within neovim
 			vim.keymap.set("n", "<leader>gg", function()
 				local handle = io.popen("which lazygit")
@@ -1084,6 +1088,12 @@ require("lazy").setup({
 			--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
 			--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 		end,
+	},
+
+	-- Sticky scroll context (with treesitter)
+	{
+		"nvim-treesitter/nvim-treesitter-context",
+		requires = "nvim-treesitter/nvim-treesitter",
 	},
 
 	-- Show a preview of the color in the editor
