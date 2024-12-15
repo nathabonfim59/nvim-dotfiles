@@ -124,6 +124,14 @@ vim.keymap.set("v", "<leader>qd", function()
 	delete_quickfix_items(start_line, end_line)
 end, { desc = "[D]elete selected quickfix items" })
 
+local has_words_before = function()
+	if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
+		return false
+	end
+	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+	return col ~= 0 and vim.api.nvim_buf_get_text(0, line - 1, 0, line - 1, col, {})[1]:match("^%s*$") == nil
+end
+
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
 -- is not what someone will guess without a bit more experience.
@@ -759,9 +767,17 @@ require("lazy").setup({
 		},
 	},
 
+	{ -- Copilot cmp source
+		"zbirenbaum/copilot-cmp",
+		dependencies = { "copilot.lua" },
+		config = function()
+			require("copilot_cmp").setup()
+		end,
+	},
+
 	{ -- Autocompletion
 		"hrsh7th/nvim-cmp",
-		event = "InsertEnter",
+		event = { "InsertEnter" },
 		dependencies = {
 			-- Snippet Engine & its associated nvim-cmp source
 			{
@@ -794,6 +810,7 @@ require("lazy").setup({
 			--  into multiple repos for maintenance purposes.
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
+			"zbirenbaum/copilot-cmp",
 		},
 		config = function()
 			-- See `:help cmp`
@@ -814,6 +831,7 @@ require("lazy").setup({
 				--
 				-- No, but seriously. Please read `:help ins-completion`, it is really good!
 				mapping = cmp.mapping.preset.insert({
+
 					-- Select the [n]ext item
 					["<C-n>"] = cmp.mapping.select_next_item(),
 					-- Select the [p]revious item
@@ -852,13 +870,22 @@ require("lazy").setup({
 						end
 					end, { "i", "s" }),
 
+					["<Tab>"] = vim.schedule_wrap(function(fallback)
+						if cmp.visible() and has_words_before() then
+							cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+						else
+							fallback()
+						end
+					end),
+
 					-- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
 					--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 				}),
 				sources = {
-					{ name = "nvim_lsp" },
-					{ name = "luasnip" },
-					{ name = "path" },
+					{ name = "copilot", group_index = 2 },
+					{ name = "nvim_lsp", group_index = 2 },
+					{ name = "luasnip", group_index = 2 },
+					{ name = "path", group_index = 2 },
 				},
 			})
 		end,
@@ -867,11 +894,25 @@ require("lazy").setup({
 	-- Github Copilot
 	{
 		"zbirenbaum/copilot.lua",
-		after = "nvim-cmp",
-		dependencies = { "zbirenbaum/copilot-cmp" },
-		event = { "InsertEnter" },
+		cmd = "Copilot",
+		event = { "InsertEnter", "CmdlineEnter" },
 		config = function()
-			require("copilot").setup({})
+			require("copilot").setup({
+				suggestion = {
+					enabled = true,
+					auto_trigger = true, -- Enable auto-trigger
+					debounce = 75,
+					keymap = {
+						accept = "<M-y>",
+						accept_word = false,
+						accept_line = false,
+						next = "<M-]>",
+						prev = "<M-[>",
+						dismiss = "<C-]>",
+					},
+				},
+				panel = { enabled = false },
+			})
 		end,
 	},
 
@@ -1026,10 +1067,17 @@ require("lazy").setup({
 			-- Load the colorscheme here.
 			-- Like many other themes, this one has different styles, and you could load
 			-- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-			-- vim.opt.termguicolors = true
+			vim.opt.termguicolors = true
 			-- vim.opt.background = "light"
 			-- vim.cmd.colorscheme("PaperColor")
 			vim.cmd.colorscheme("monokai-pro-spectrum")
+			-- vim.cmd.colorscheme("minischeme")
+
+			-- Put everything in transparent background
+			vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+			vim.api.nvim_set_hl(0, "NonText", { bg = "none" })
+			vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+			vim.api.nvim_set_hl(0, "FloatBorder", { bg = "none" })
 
 			-- vim.cmd.hi("Comment gui=none")
 			-- vim.cmd.hi("MiniStatuslineModeInsert guibg=#569CD6 guifg=#343434")
@@ -1067,7 +1115,6 @@ require("lazy").setup({
 			--  - yinq - [Y]ank [I]nside [N]ext [']quote
 			--  - ci'  - [C]hange [I]nside [']quote
 			require("mini.ai").setup({ n_lines = 500 })
-
 
 			-- Git integration
 			require("mini.git").setup()
