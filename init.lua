@@ -350,17 +350,30 @@ require("lazy").setup({
 			require("which-key").setup()
 
 			-- Document existing key chains
-			require("which-key").register({
-				["<leader>c"] = { name = "[C]ode", _ = "which_key_ignore" },
-				["<leader>d"] = { name = "[D]ocument", _ = "which_key_ignore" },
-				["<leader>r"] = { name = "[R]ename", _ = "which_key_ignore" },
-				["<leader>s"] = { name = "[S]earch", _ = "which_key_ignore" },
-				["<leader>w"] = { name = "[W]orkspace", _ = "which_key_ignore" },
-				["<leader>p"] = { name = "Co[P]ilot", _ = "which_key_ignore", mode = { "n", "v" } },
-				["<leader>pc"] = { name = "Co[P]ilot [C]hat", _ = "which_key_ignore", mode = { "n", "v" } },
-				["<leader>g"] = { name = "[G]it", _ = "which_key_ignore", mode = { "n", "v" } },
-				["<leader>t"] = { name = "[T]Terminal", _ = "which_key_ignore", mode = { "n", "v" } },
-				["<leader>q"] = { name = "[Q]uickfix Operations", _ = "which_key_ignore", mode = { "n", "v" } },
+			require("which-key").add({
+				{ "<leader>c", group = "[C]ode" },
+				{ "<leader>c_", hidden = true },
+				{ "<leader>d", group = "[D]ocument" },
+				{ "<leader>d_", hidden = true },
+				{ "<leader>r", group = "[R]ename" },
+				{ "<leader>r_", hidden = true },
+				{ "<leader>s", group = "[S]earch" },
+				{ "<leader>s_", hidden = true },
+				{ "<leader>w", group = "[W]orkspace" },
+				{ "<leader>w_", hidden = true },
+				{
+					mode = { "n", "v" },
+					{ "<leader>g", group = "[G]it" },
+					{ "<leader>g_", hidden = true },
+					{ "<leader>p", group = "Co[P]ilot" },
+					{ "<leader>p_", hidden = true },
+					{ "<leader>pc", group = "Co[P]ilot [C]hat" },
+					{ "<leader>pc_", hidden = true },
+					{ "<leader>q", group = "[Q]uickfix Operations" },
+					{ "<leader>q_", hidden = true },
+					{ "<leader>t", group = "[T]Terminal" },
+					{ "<leader>t_", hidden = true },
+				},
 			})
 		end,
 	},
