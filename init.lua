@@ -139,6 +139,23 @@ end
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+-- SQL-specific keymaps
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "sql",
+	callback = function()
+		local opts = { buffer = true }
+		vim.keymap.set("n", "<leader>sq", "<cmd>SqlsExecuteQuery<CR>", { buffer = true, desc = "Execute SQL Query" })
+		vim.keymap.set(
+			"n",
+			"<leader>sv",
+			"<cmd>SqlsExecuteQueryVertical<CR>",
+			{ buffer = true, desc = "Execute SQL Query (Vertical)" }
+		)
+		vim.keymap.set("n", "<leader>sd", "<cmd>SqlsShowDatabases<CR>", { buffer = true, desc = "Show Databases" })
+		vim.keymap.set("n", "<leader>ss", "<cmd>SqlsShowSchemas<CR>", { buffer = true, desc = "Show Schemas" })
+		vim.keymap.set("n", "<leader>sc", "<cmd>SqlsShowConnections<CR>", { buffer = true, desc = "Show Connections" })
+	end,
+})
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -601,6 +618,18 @@ require("lazy").setup({
 			-- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
 			-- used for completion, annotations and signatures of Neovim apis
 			{ "folke/neodev.nvim", opts = {} },
+
+			-- SQL lsp
+			{
+				"nanotee/sqls.nvim",
+				config = function()
+					require("lspconfig").sqls.setup({
+						on_attach = function(client, bufnr)
+							require("sqls").on_attach(client, bufnr)
+						end,
+					})
+				end,
+			},
 		},
 		config = function()
 			-- Brief aside: **What is LSP?**
@@ -726,18 +755,24 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				-- clangd = {},
-				-- gopls = {},
-				-- pyright = {},
-				-- rust_analyzer = {},
-				-- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-				--
-				-- Some languages (like typescript) have entire language plugins that can be useful:
-				--    https://github.com/pmizio/typescript-tools.nvim
-				--
-				-- But for many setups, the LSP (`tsserver`) will work just fine
-				-- tsserver = {},
-				--
+				sqls = {
+					settings = {
+						sqls = {
+							connections = {
+								-- {
+								-- 	driver = "mysql",
+								-- 	dataSourceName = "root:root@tcp(127.0.0.1:3306)/database_name",
+								-- },
+								-- Add more database connections as needed:
+								{
+									name = "financeiro",
+									driver = "postgresql",
+									dataSourceName = "host=localhost port=5432 user=financeiro password=financeiro dbname=financeiro sslmode=disable",
+								},
+							},
+						},
+					},
+				},
 
 				lua_ls = {
 					-- cmd = {...},
@@ -768,6 +803,7 @@ require("lazy").setup({
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
+				"sqls", -- SQL language server
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -810,6 +846,7 @@ require("lazy").setup({
 					cpp = true,
 					vue = true,
 					php = true,
+					sql = true,
 					css = true,
 					scss = true,
 					ctp = true,
@@ -1128,7 +1165,7 @@ require("lazy").setup({
 		-- change the command in the config to whatever the name of that colorscheme is.
 		--
 		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-		"loctvl842/monokai-pro.nvim",
+		"nickkadutskyi/jb.nvim",
 		priority = 1000, -- Make sure to load this before all the other start plugins.
 		init = function()
 			-- Load the colorscheme here.
@@ -1137,7 +1174,7 @@ require("lazy").setup({
 			vim.opt.termguicolors = true
 			-- vim.opt.background = "light"
 			-- vim.cmd.colorscheme("PaperColor")
-			vim.cmd.colorscheme("monokai-pro-spectrum")
+			vim.cmd.colorscheme("jb")
 			-- vim.cmd.colorscheme("minischeme")
 
 			-- Put everything in transparent background
