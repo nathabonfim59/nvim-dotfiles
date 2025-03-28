@@ -139,23 +139,6 @@ end
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
--- SQL-specific keymaps
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "sql",
-	callback = function()
-		local opts = { buffer = true }
-		vim.keymap.set("n", "<leader>sq", "<cmd>SqlsExecuteQuery<CR>", { buffer = true, desc = "Execute SQL Query" })
-		vim.keymap.set(
-			"n",
-			"<leader>sv",
-			"<cmd>SqlsExecuteQueryVertical<CR>",
-			{ buffer = true, desc = "Execute SQL Query (Vertical)" }
-		)
-		vim.keymap.set("n", "<leader>sd", "<cmd>SqlsShowDatabases<CR>", { buffer = true, desc = "Show Databases" })
-		vim.keymap.set("n", "<leader>ss", "<cmd>SqlsShowSchemas<CR>", { buffer = true, desc = "Show Schemas" })
-		vim.keymap.set("n", "<leader>sc", "<cmd>SqlsShowConnections<CR>", { buffer = true, desc = "Show Connections" })
-	end,
-})
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -232,7 +215,7 @@ require("lazy").setup({
 			auto_suggestions_provider = "copilot",
 			auto_suggestions = true,
 			copilot = {
-				model = "claude-3.5-sonnet",
+				model = "claude-3.7-sonnet",
 				-- max_tokens = 4096,
 			},
 		},
@@ -524,6 +507,10 @@ require("lazy").setup({
 				desc = "Toggle [C]ode Con[t]ext",
 			})
 
+			vim.keymap.set("n", "<leader>db", ":Dbee<CR>", {
+				desc = "[D]atabase [B]rowser",
+			})
+
 			-- Open LazyGit with toggleterm within neovim
 			vim.keymap.set("n", "<leader>gg", function()
 				local handle = io.popen("which lazygit")
@@ -619,14 +606,41 @@ require("lazy").setup({
 			-- used for completion, annotations and signatures of Neovim apis
 			{ "folke/neodev.nvim", opts = {} },
 
-			-- SQL lsp
 			{
-				"nanotee/sqls.nvim",
+				"kndndrj/nvim-dbee",
+				dependencies = {
+					"MunifTanjim/nui.nvim",
+				},
+				build = function()
+					-- Install tries to automatically detect the install method.
+					-- if it fails, try calling it with one of these parameters:
+					--    "curl", "wget", "bitsadmin", "go"
+					require("dbee").install()
+				end,
+				opts = {},
 				config = function()
-					require("lspconfig").sqls.setup({
-						on_attach = function(client, bufnr)
-							require("sqls").on_attach(client, bufnr)
-						end,
+					require("dbee").setup({
+						drawer = {
+							mappings = {
+								{ key = "r", mode = "n", action = "refresh" },
+								-- actions perform different stuff depending on the node:
+								-- action_1 opens a note or executes a helper
+								{ key = "<CR>", mode = "n", action = "action_1" },
+								-- action_2 renames a note or sets the connection as active manually
+								{ key = "cw", mode = "n", action = "action_2" },
+								-- action_3 deletes a note or connection (removes connection from the file if you configured it like so)
+								{ key = "dd", mode = "n", action = "action_3" },
+								-- these are self-explanatory:
+								{ key = "c", mode = "n", action = "collapse" },
+								{ key = "e", mode = "n", action = "expand" },
+								{ key = "o", mode = "n", action = "toggle" },
+								-- mappings for menu popups:
+								{ key = "<CR>", mode = "n", action = "menu_confirm" },
+								{ key = "y", mode = "n", action = "menu_yank" },
+								{ key = "<Esc>", mode = "n", action = "menu_close" },
+								{ key = "q", mode = "n", action = "menu_close" },
+							},
+						},
 					})
 				end,
 			},
@@ -755,25 +769,6 @@ require("lazy").setup({
 			--  - settings (table): Override the default settings passed when initializing the server.
 			--        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
 			local servers = {
-				sqls = {
-					settings = {
-						sqls = {
-							connections = {
-								-- {
-								-- 	driver = "mysql",
-								-- 	dataSourceName = "root:root@tcp(127.0.0.1:3306)/database_name",
-								-- },
-								-- Add more database connections as needed:
-								{
-									name = "financeiro",
-									driver = "postgresql",
-									dataSourceName = "host=localhost port=5432 user=financeiro password=financeiro dbname=financeiro sslmode=disable",
-								},
-							},
-						},
-					},
-				},
-
 				lua_ls = {
 					-- cmd = {...},
 					-- filetypes = { ...},
@@ -803,7 +798,6 @@ require("lazy").setup({
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
-				"sqls", -- SQL language server
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -915,6 +909,14 @@ require("lazy").setup({
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
 			"zbirenbaum/copilot-cmp",
+			{
+				"MattiasMTS/cmp-dbee",
+				dependencies = {
+					{ "kndndrj/nvim-dbee" },
+				},
+				ft = "sql", -- optional but good to have
+				opts = {}, -- needed
+			},
 		},
 		config = function()
 			-- See `:help cmp`
@@ -986,6 +988,7 @@ require("lazy").setup({
 					--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 				}),
 				sources = {
+					{ name = "cmp-dbee", group_index = 3 },
 					{ name = "copilot", group_index = 2 },
 					{ name = "nvim_lsp", group_index = 2 },
 					{ name = "luasnip", group_index = 2 },
@@ -1295,6 +1298,23 @@ require("lazy").setup({
 		config = function()
 			require("colorizer").setup()
 		end,
+	},
+
+	-- Syntax highlight for various filetypes
+	{
+		"jidn/vim-dbml",
+	},
+
+	-- Love2d
+	{
+		"S1M0N38/love2d.nvim",
+		cmd = "LoveRun",
+		opts = {},
+		keys = {
+			{ "<leader>v", ft = "lua", desc = "LÖVE" },
+			{ "<leader>vv", "<cmd>LoveRun<cr>", ft = "lua", desc = "Run LÖVE" },
+			{ "<leader>vs", "<cmd>LoveStop<cr>", ft = "lua", desc = "Stop LÖVE" },
+		},
 	},
 
 	-- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
