@@ -82,6 +82,7 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagn
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 vim.keymap.set("n", "<leader>qd", vim.diagnostic.setloclist, { desc = "Open [d]iagnostic quickfix list" })
 
+-- Define function first
 local function delete_quickfix_items(start_line, end_line)
 	if vim.fn.getwininfo(vim.api.nvim_get_current_win())[1].quickfix ~= 1 then
 		print("Not in a quickfix window")
@@ -112,6 +113,55 @@ local function delete_quickfix_items(start_line, end_line)
 
 	print(string.format("Deleted %d quickfix item(s)", items_to_remove))
 end
+
+-- Create the two-step grep functionality
+vim.keymap.set("n", "<leader>st", function()
+	local actions = require("telescope.actions")
+	local action_state = require("telescope.actions.state")
+	local finders = require("telescope.finders")
+	local pickers = require("telescope.pickers")
+	local conf = require("telescope.config").values
+
+	-- Step 1: Select directory
+	pickers
+		.new({}, {
+			prompt_title = "Select Directory for Grep",
+			finder = finders.new_oneshot_job({ "fd", "--type", "d", "--hidden", "--exclude", ".git" }, {}),
+			sorter = conf.generic_sorter({}),
+			attach_mappings = function(prompt_bufnr, map)
+				actions.select_default:replace(function()
+					local selection = action_state.get_selected_entry()
+					actions.close(prompt_bufnr)
+
+					-- Step 2: Live grep in the selected directory
+					require("telescope.builtin").live_grep({
+						prompt_title = "Grep in: " .. selection[1],
+						cwd = selection[1],
+					})
+				end)
+				return true
+			end,
+		})
+		:find()
+end, { desc = "[S]earch [T]wo-step grep" })
+
+-- Then create the autocmd that references it
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "qf",
+	callback = function()
+		vim.keymap.set("n", "dd", function()
+			local current_line = vim.fn.line(".")
+			delete_quickfix_items(current_line, current_line)
+		end, { buffer = true })
+
+		-- Visual mode mapping
+		vim.keymap.set("v", "d", function()
+			local start_line = vim.fn.line("'<")
+			local end_line = vim.fn.line("'>")
+			delete_quickfix_items(start_line, end_line)
+		end, { buffer = true })
+	end,
+})
 
 vim.keymap.set("n", "<leader>qD", function()
 	delete_quickfix_items(vim.fn.line("."), vim.fn.line("."))
@@ -489,12 +539,13 @@ require("lazy").setup({
 			end, { desc = "[S]earch [N]eovim files" })
 
 			-- Defines the syntax for CakePHP's .ctp files as PHP
-			vim.cmd([[
-        augroup FiletypeCTP
-        autocmd!
-        autocmd BufEnter *.ctp lua vim.api.nvim_buf_set_option(0, 'syntax', 'php')
-        augroup END
-      ]])
+			vim.api.nvim_create_autocmd("BufEnter", {
+				pattern = "*.ctp",
+				callback = function()
+					vim.bo.syntax = "php"
+				end,
+				group = vim.api.nvim_create_augroup("FiletypeCTP", { clear = true }),
+			})
 
 			vim.cmd([[
         augroup FiletypeCTP
