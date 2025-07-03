@@ -517,6 +517,7 @@ require("lazy").setup({
 			-- Enable Telescope extensions if they are installed
 			pcall(require("telescope").load_extension, "fzf")
 			pcall(require("telescope").load_extension, "ui-select")
+			pcall(require("telescope").load_extension, "harpoon")
 
 			-- See `:help telescope.builtin`
 			local builtin = require("telescope.builtin")
@@ -1337,6 +1338,28 @@ require("lazy").setup({
 		},
 	},
 
+	{
+		"ThePrimeagen/harpoon",
+		config = function()
+			local hm = require("harpoon.mark")
+
+			vim.keymap.set("n", "<leader>hh", function()
+				require("harpoon.ui").toggle_quick_menu()
+			end, { desc = "Toggle [H]arpoon menu" })
+
+			vim.keymap.set("n", "<leader>ha", function()
+				hm.add_file()
+			end, { desc = "[H]arpoon [A]dd file" })
+
+			vim.keymap.set("n", "<leader>hj", function()
+				hm.nav_next()
+			end, { desc = "[H]arpoon Next file" })
+
+			vim.keymap.set("n", "<leader>hk", function()
+				hm.av_prev()
+			end, { desc = "[H]arpoon prev file" })
+		end,
+	},
 	-- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
 	-- init.lua. If you want these files, they are in the repository, so you can just download them and
 	-- place them in the correct locations.
