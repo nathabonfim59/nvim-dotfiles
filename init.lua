@@ -279,9 +279,11 @@ require("lazy").setup({
 			provider = "copilot",
 			auto_suggestions_provider = "copilot",
 			auto_suggestions = false,
-			copilot = {
-				model = "claude-3.7-sonnet",
-				-- max_tokens = 4096,
+			providers = {
+				copilot = {
+					model = "gpt-4o",
+					-- max_tokens = 4096,
+				},
 			},
 		},
 		-- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
