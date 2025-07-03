@@ -1284,12 +1284,25 @@ require("lazy").setup({
 			-- - sr)'  - [S]urround [R]eplace [)] [']
 			require("mini.surround").setup()
 
+			local function get_relative_to_root()
+				local rel = vim.fn.expand("%:.") -- “%” → filename, “:.” → make it relative to cwd :contentReference[oaicite:2]{index=2}
+				if rel == "" or rel == "." then -- fallback for unnamed buffers
+					return "[No Name]"
+				end
+				return rel
+			end
+
 			-- Simple and easy statusline.
 			--  You could remove this setup call if you don't like it,
 			--  and try some other statusline plugin
 			local statusline = require("mini.statusline")
 			-- set use_icons to true if you have a Nerd Font
-			statusline.setup({ use_icons = vim.g.have_nerd_font })
+			statusline.setup({
+				use_icons = vim.g.have_nerd_font,
+				content = {
+					inactive = get_relative_to_root,
+				},
+			})
 
 			-- You can configure sections in the statusline by overriding their
 			-- default behavior. For example, here we set the section for
@@ -1297,6 +1310,10 @@ require("lazy").setup({
 			---@diagnostic disable-next-line: duplicate-set-field
 			statusline.section_location = function()
 				return "%2l:%-2v"
+			end
+
+			statusline.section_filename = function()
+				return vim.fn.expand("%:.")
 			end
 
 			-- ... and there is more!
