@@ -1054,7 +1054,7 @@ require("lazy").setup({
 		config = function()
 			require("copilot").setup({
 				suggestion = {
-					enabled = true,
+					enabled = false,
 					auto_trigger = true, -- Enable auto-trigger
 					debounce = 75,
 					keymap = {
