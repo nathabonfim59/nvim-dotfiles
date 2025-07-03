@@ -929,6 +929,8 @@ require("lazy").setup({
 					ctp = true,
 					javascript = true,
 					js = true,
+					typescript = true,
+					ts = true,
 					conf = true,
 				}
 				return {
