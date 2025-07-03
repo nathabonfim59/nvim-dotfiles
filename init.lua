@@ -679,6 +679,14 @@ require("lazy").setup({
 				"kndndrj/nvim-dbee",
 				dependencies = {
 					"MunifTanjim/nui.nvim",
+					{
+						"MattiasMTS/cmp-dbee",
+						dependencies = {
+							"kndndrj/nvim-dbee",
+						},
+						ft = { "sql", "mysql", "plsql" },
+						opts = {},
+					},
 				},
 				build = function()
 					-- Install tries to automatically detect the install method.
@@ -949,6 +957,15 @@ require("lazy").setup({
 	-- },
 	--
 	{
+		"saghen/blink.compat",
+		-- use v2.* for blink.cmp v1.*
+		version = "2.*",
+		-- lazy.nvim will automatically load the plugin when it's required by blink.cmp
+		lazy = true,
+		-- make sure to set opts so that lazy.nvim calls blink.compat's setup
+		opts = {},
+	},
+	{
 		"saghen/blink.cmp",
 		-- optional: provides snippets for the snippet source
 		dependencies = {
@@ -999,6 +1016,9 @@ require("lazy").setup({
 					"snippets",
 					"buffer",
 				},
+				per_filetype = {
+					sql = { "dbee", "buffer", "snippets" },
+				},
 				providers = {
 					avante = {
 						module = "blink-cmp-avante",
@@ -1006,6 +1026,11 @@ require("lazy").setup({
 						opts = {
 							-- options for blink-cmp-avante
 						},
+					},
+					dbee = {
+						name = "cmp-dbee",
+						module = "blink.compat.source",
+						-- score_offset = 50,
 					},
 				},
 			},
