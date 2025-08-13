@@ -282,7 +282,26 @@ require("lazy").setup({
 			providers = {
 				copilot = {
 					model = "gpt-4o",
-					-- max_tokens = 4096,
+				},
+				["kimi-k2"] = {
+					__inherited_from = "openai",
+					endpoint = "https://openrouter.ai/api/v1",
+					api_key_name = "OPENROUTER_API_KEY_AVANTE",
+					model = "moonshotai/kimi-k2:novita",
+					max_tokens = 131000,
+					extra_body = {
+						provider = {
+							order = { "novita" },
+							allow_fallbacks = false,
+						},
+					},
+				},
+				["qwen-3-coder-480b"] = {
+					__inherited_from = "openai",
+					endpoint = "https://api.cerebras.ai/v1",
+					api_key_name = "CEREBRAS_QWEN_API_KEY",
+					model = "qwen-3-coder-480b",
+					max_tokens = 131000,
 				},
 			},
 		},
@@ -295,7 +314,9 @@ require("lazy").setup({
 			"MunifTanjim/nui.nvim",
 			--- The below dependencies are optional,
 			"nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-			"zbirenbaum/copilot.lua", -- for providers='copilot'
+			{
+				"zbirenbaum/copilot.lua",
+			}, -- for providers='copilot'
 			{
 				-- support for image pasting
 				"HakonHarnes/img-clip.nvim",
