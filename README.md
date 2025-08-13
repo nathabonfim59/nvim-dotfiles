@@ -1,6 +1,9 @@
 # Neovim Configuration
 
-![image](https://github.com/nathabonfim59/nvim-dotfiles/assets/21281852/8b76acab-fa6a-4bbb-86e7-6c2a4d7adea9)
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/280c8c88-48c7-4485-8f3b-345389e3bc5f" />
+
+> Snippet from [Cerebras Code Monitor](https://github.com/nathabonfim59/cerebras-code-monitor)
+
 
 This repository contains my personal Neovim configuration, organized with [lazy.nvim](https://github.com/folke/lazy.nvim) plugin manager. The configuration is written in Lua and structured for maintainability and extensibility.
 
