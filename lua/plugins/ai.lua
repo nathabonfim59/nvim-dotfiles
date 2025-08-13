@@ -35,6 +35,101 @@ return {
 				},
 			},
 		},
+		keys = {
+			-- Show AI prompts actions with telescope
+			{
+				"<leader>pca",
+				function()
+					local pickers = require("telescope.pickers")
+					local finders = require("telescope.finders")
+					local conf = require("telescope.config").values
+					local actions = require("telescope.actions")
+					local action_state = require("telescope.actions.state")
+
+					-- Define AI prompt options
+					local prompt_items = {
+						{
+							id = "explain",
+							title = "Explain Code",
+							description = "Explain how the selected code works",
+							prompt = "Please explain how this code works step by step, including its purpose, logic, and any important details.",
+						},
+						{
+							id = "review",
+							title = "Code Review",
+							description = "Review code for potential issues and improvements",
+							prompt = "Please review this code and suggest improvements. Look for potential bugs, performance issues, security concerns, and best practices.",
+						},
+						{
+							id = "fix",
+							title = "Fix Code",
+							description = "Suggest fixes for code issues",
+							prompt = "Please analyze this code and suggest fixes for any issues, bugs, or improvements that should be made.",
+						},
+						{
+							id = "optimize",
+							title = "Optimize Code",
+							description = "Optimize code for better performance",
+							prompt = "Please optimize this code for better performance, efficiency, and readability while maintaining the same functionality.",
+						},
+						{
+							id = "tests",
+							title = "Generate Tests",
+							description = "Generate unit tests for the code",
+							prompt = "Please generate comprehensive unit tests for this code, including edge cases and error scenarios.",
+						},
+						{
+							id = "docs",
+							title = "Generate Documentation",
+							description = "Generate documentation for the code",
+							prompt = "Please generate comprehensive documentation for this code, including function descriptions, parameters, return values, and usage examples.",
+						},
+						{
+							id = "refactor",
+							title = "Refactor Code",
+							description = "Refactor code for better structure",
+							prompt = "Please refactor this code to improve its structure, readability, and maintainability while preserving functionality.",
+						},
+						{
+							id = "commit",
+							title = "Generate Commit Message",
+							description = "Generate a commit message for staged changes",
+							prompt = "Please generate a concise and descriptive commit message for the staged changes, following conventional commit format.",
+						},
+					}
+
+					pickers.new({}, {
+						prompt_title = "Select AI Action",
+						finder = finders.new_table({
+							results = prompt_items,
+							entry_maker = function(entry)
+								return {
+									value = entry,
+									display = entry.title .. " - " .. entry.description,
+									ordinal = entry.title .. " " .. entry.description,
+								}
+							end,
+						}),
+						sorter = conf.generic_sorter({}),
+						attach_mappings = function(prompt_bufnr, map)
+							actions.select_default:replace(function()
+								local selection = action_state.get_selected_entry()
+								actions.close(prompt_bufnr)
+								
+								-- Trigger Avante with selected prompt
+								require("avante.api").ask({
+									question = selection.value.prompt,
+									new_chat = true,
+								})
+							end)
+							return true
+						end,
+					}):find()
+				end,
+				desc = "Avante - AI Prompt Actions",
+				mode = { "n", "v" },
+			},
+		},
 		-- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
 		build = "make",
 		-- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
@@ -100,128 +195,4 @@ return {
 		end,
 	},
 
-	-- Copilot Chat
-	{
-		"CopilotC-Nvim/CopilotChat.nvim",
-		branch = "canary",
-		dependencies = {
-			{ "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-			{ "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-		},
-		opts = {
-			debug = false, -- Enable debugging
-			context = "buffers",
-		},
-		keys = {
-			-- Show prompts actions with telescope
-			{
-				"<leader>pca",
-				function()
-					local actions = require("CopilotChat.actions")
-					require("CopilotChat.integrations.telescope").pick(actions.prompt_actions())
-				end,
-				desc = "CopilotChat - Prompt actions",
-				mode = { "n", "v" },
-			},
-			{
-				"<leader>pcp",
-				function()
-					require("CopilotChat").toggle({
-						window = {
-							layout = "horizontal",
-						},
-					})
-				end,
-				mode = "n",
-				desc = "Open CopilotChat pane",
-			},
-			{
-				"<leader>pcf",
-				function()
-					require("CopilotChat").toggle({
-						window = {
-							layout = "float",
-							height = 0.8,
-							width = 0.8,
-						},
-					})
-				end,
-				mode = "n",
-				desc = "Open CopilotChat floating",
-			},
-			{
-				"<leader>pci",
-				function()
-					require("CopilotChat").toggle({
-						window = {
-							layout = "float",
-							relative = "cursor",
-							width = 1,
-							height = 0.4,
-							row = 1,
-						},
-					})
-				end,
-				mode = { "n", "v" },
-				desc = "Open CopilotChat inline",
-			},
-			{
-				"<leader>pcq",
-				function()
-					local input = vim.fn.input("Quick Chat: ")
-					if input ~= "" then
-						require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
-					end
-				end,
-				desc = "CopilotChat - Quick chat",
-			},
-			{
-				"<leader>pce",
-				"<cmd>CopilotChatExplain<cr>",
-				mode = "v",
-				desc = "AI Explain",
-			},
-			{
-				"<leader>pcr",
-				"<cmd>CopilotChatReview<cr>",
-				mode = "v",
-				desc = "AI Review",
-			},
-			{
-				"<leader>pct",
-				"<cmd>CopilotChatTests<cr>",
-				mode = "v",
-				desc = "AI Tests",
-			},
-			{
-				"<leader>pcf",
-				"<cmd>CopilotChatFix<cr>",
-				mode = "v",
-				desc = "AI Fix",
-			},
-			{
-				"<leader>pco",
-				"<cmd>CopilotChatOptimize<cr>",
-				mode = "v",
-				desc = "AI Optimize",
-			},
-			{
-				"<leader>pcd",
-				"<cmd>CopilotChatDocs<cr>",
-				mode = "v",
-				desc = "AI Documentation",
-			},
-			{
-				"<leader>pcc",
-				"<cmd>CopilotChatCommitStaged<cr>",
-				mode = "v",
-				desc = "AI Generate Commit",
-			},
-		},
-		config = function()
-			local chat = require("CopilotChat")
-			chat.setup({})
-		end,
-	},
 }
-
