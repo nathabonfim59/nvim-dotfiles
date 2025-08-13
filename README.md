@@ -102,13 +102,13 @@ The configuration is organized into the following files and directories:
 | `<leader>gj` | Go to next hunk |
 | `<leader>gk` | Go to previous hunk |
 | `<leader>gl` | Blame current line |
-| `<leader>gg` | Open LazyGit terminal interface |
+| `<leader>gg` | Open LazyGit terminal interface (requires [lazygit](https://github.com/jesseduffield/lazygit) to be installed) |
 
 ### JSON Filtering
 
 | Keybinding | Description |
 |------------|-------------|
-| `<leader>ti` | Open current file in jid JSON filter |
+| `<leader>ti` | Open current file in jid JSON filter (requires [jid](https://github.com/simeji/jid) to be installed) |
 
 ### Telescope (Fuzzy Finder)
 
