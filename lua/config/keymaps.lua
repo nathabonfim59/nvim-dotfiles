@@ -108,7 +108,7 @@ vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower win
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- Treesitter context toggle
-vim.keymap.set("n", "<leader>ct", ":TSContextToggle<CR>", {
+vim.keymap.set("n", "<leader>ct", ":TSContext toggle<CR>", {
 	desc = "Toggle [C]ode Con[t]ext",
 })
 
@@ -210,3 +210,4 @@ end, { desc = "[H]arpoon Next file" })
 vim.keymap.set("n", "<leader>hk", function()
 	require("harpoon.mark").nav_prev()
 end, { desc = "[H]arpoon prev file" })
+
