@@ -10,6 +10,13 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next [D]iagn
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Show diagnostic [E]rror messages" })
 vim.keymap.set("n", "<leader>qd", vim.diagnostic.setloclist, { desc = "Open [d]iagnostic quickfix list" })
 
+-- Leader key version (usually backslash or space)
+vim.keymap.set("n", "<leader>yp", function()
+	local path = vim.fn.expand("%:p")
+	vim.fn.setreg("+", path)
+	vim.notify("Copied: " .. path)
+end, { desc = "Copy absolute path" })
+
 -- Define function first
 local function delete_quickfix_items(start_line, end_line)
 	if vim.fn.getwininfo(vim.api.nvim_get_current_win())[1].quickfix ~= 1 then
@@ -210,4 +217,3 @@ end, { desc = "[H]arpoon Next file" })
 vim.keymap.set("n", "<leader>hk", function()
 	require("harpoon.mark").nav_prev()
 end, { desc = "[H]arpoon prev file" })
-
