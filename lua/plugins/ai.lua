@@ -8,7 +8,7 @@ return {
 		opts = {
 			provider = "copilot",
 			auto_suggestions_provider = "copilot",
-			auto_suggestions = true,
+			auto_suggestions = false,
 			providers = {
 				copilot = {
 					model = "gpt-5-mini",
@@ -26,13 +26,18 @@ return {
 						},
 					},
 				},
-				["qwen-3-coder-480b"] = {
+				["zai-glm-4.6"] = {
 					__inherited_from = "openai",
 					endpoint = "https://api.cerebras.ai/v1",
 					api_key_name = "CEREBRAS_QWEN_API_KEY",
 					model = "qwen-3-coder-480b",
 					max_tokens = 131000,
 				},
+			},
+			-- Smart Tab (Automatic Suggestions) Configuration
+			suggestion = {
+				debounce = 600, -- Delay in ms before generating suggestions
+				throttle = 600, -- Minimum delay between suggestion requests
 			},
 		},
 		keys = {
