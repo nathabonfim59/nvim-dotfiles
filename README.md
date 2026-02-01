@@ -248,25 +248,91 @@ The following core Neovim options are configured in `lua/config/options.lua`:
 
 ## Plugins
 
+### AI (4 plugins)
+
+| Plugin | Description | Link |
+|--------|-------------|------|
+| opencode.nvim | AI assistant for code generation and completion | [GitHub](https://github.com/anomalyco/opencode.nvim) |
+| copilot.lua | GitHub Copilot code suggestions | [GitHub](https://github.com/zbirenbaum/copilot.lua) |
+| 99 | AI-powered code completion | [GitHub](https://github.com/ThePrimeagen/99) |
+| blink-cmp-avante | Avante AI integration for completion | [GitHub](https://github.com/Yazeed1s/blink-cmp-avante) |
+
+### Git (3 plugins)
+
+| Plugin | Description | Link |
+|--------|-------------|------|
+| gitsigns.nvim | Git signs in gutter, hunk navigation | [GitHub](https://github.com/lewis6991/gitsigns.nvim) |
+| neogit | Git interface (Magit-like) | [GitHub](https://github.com/NeogitOrg/neogit) |
+| diffview.nvim | Diff viewer and merge tool | [GitHub](https://github.com/sindrets/diffview.nvim) |
+
+### LSP and Completion (10 plugins)
+
+| Plugin | Description | Link |
+|--------|-------------|------|
+| nvim-lspconfig | LSP configuration for various language servers | [GitHub](https://github.com/neovim/nvim-lspconfig) |
+| mason.nvim | Package manager for LSPs and tools | [GitHub](https://github.com/williamboman/mason.nvim) |
+| mason-lspconfig.nvim | Bridge between mason and lspconfig | [GitHub](https://github.com/williamboman/mason-lspconfig.nvim) |
+| mason-tool-installer.nvim | Automatic tool installation | [GitHub](https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim) |
+| fidget.nvim | LSP status updates | [GitHub](https://github.com/j-hui/fidget.nvim) |
+| neodev.nvim | Lua LSP for Neovim config | [GitHub](https://github.com/folke/neodev.nvim) |
+| nvim-dbee | Database browser integration | [GitHub](https://github.com/kristijanhusak/nvim-dbee) |
+| conform.nvim | Code formatting | [GitHub](https://github.com/stevearc/conform.nvim) |
+| blink.cmp | Completion engine (fast, Rust-based) | [GitHub](https://github.com/Saghen/blink.cmp) |
+| blink.compat | Compatibility layer for blink.cmp | [GitHub](https://github.com/Saghen/blink.compat) |
+
+### UI (6 plugins)
+
+| Plugin | Description | Link |
+|--------|-------------|------|
+| which-key.nvim | Keybinding hints and popup menus | [GitHub](https://github.com/folke/which-key.nvim) |
+| todo-comments.nvim | Highlight TODO, FIX, NOTE comments | [GitHub](https://github.com/folke/todo-comments.nvim) |
+| mini.nvim | Collection of plugins (ai, git, cursorword, surround, statusline) | [GitHub](https://github.com/echasnovski/mini.nvim) |
+| undotree | Visual undo history | [GitHub](https://github.com/jiaoshijie/undotree) |
+| nvim-colorizer.lua | Color code preview in editor | [GitHub](https://github.com/NvChad/nvim-colorizer.lua) |
+| flash.nvim | Quick navigation with labels | [GitHub](https://github.com/folke/flash.nvim) |
+
+### Navigation and Search (5 plugins)
+
+| Plugin | Description | Link |
+|--------|-------------|------|
+| telescope.nvim | Fuzzy finder (files, grep, LSP, etc.) | [GitHub](https://github.com/nvim-telescope/telescope.nvim) |
+| telescope-fzf-native.nvim | FZF algorithm for faster searching | [GitHub](https://github.com/nvim-telescope/telescope-fzf-native.nvim) |
+| telescope-ui-select.nvim | UI select integration | [GitHub](https://github.com/nvim-telescope/telescope-ui-select.nvim) |
+| harpoon | Quick file bookmarking | [GitHub](https://github.com/ThePrimeagen/harpoon) |
+| bookmarks.nvim | Advanced bookmark management with telescope support | [GitHub](https://github.com/LeonHeidelbach/trailblazer.nvim) |
+
+### Editing (1 plugin)
+
+| Plugin | Description | Link |
+|--------|-------------|------|
+| kulala.nvim | HTTP/REST client for testing APIs | [GitHub](https://github.com/mrjones2014/kulala.nvim) |
+
+### Treesitter (2 plugins)
+
+| Plugin | Description | Link |
+|--------|-------------|------|
+| nvim-treesitter | Syntax highlighting and code parsing | [GitHub](https://github.com/nvim-treesitter/nvim-treesitter) |
+| nvim-treesitter-context | Sticky function context at top of screen | [GitHub](https://github.com/nvim-treesitter/nvim-treesitter-context) |
+
+### Color Scheme (2 plugins)
+
+| Plugin | Description | Link |
+|--------|-------------|------|
+| jb.nvim | JetBrains-inspired colorscheme (default) | [GitHub](https://github.com/nathabonfim59/jb.nvim) |
+| papercolor-theme | Light/dark theme option | [GitHub](https://github.com/NLKNguyen/papercolor-theme) |
+
+### Utilities (6 plugins)
+
 | Plugin | Description | Link |
 |--------|-------------|------|
 | vim-sleuth | Detect tabstop and shiftwidth automatically | [GitHub](https://github.com/tpope/vim-sleuth) |
-| Comment.nvim | "gc" to comment visual regions/lines | [GitHub](https://github.com/numToStr/Comment.nvim) |
-| gitsigns.nvim | Adds git related signs to the gutter, as well as utilities for managing changes | [GitHub](https://github.com/lewis6991/gitsigns.nvim) |
-| neogit | A Magit clone for Neovim | [GitHub](https://github.com/NeogitOrg/neogit) |
-| which-key.nvim | Useful plugin to show you pending keybinds | [GitHub](https://github.com/folke/which-key.nvim) |
-| lazy.nvim | Plugin manager for Neovim | [GitHub](https://github.com/folke/lazy.nvim) |
-| telescope.nvim | Fuzzy Finder (files, lsp, etc) | [GitHub](https://github.com/nvim-telescope/telescope.nvim) |
-| nvim-lspconfig | LSP Configuration & Plugins | [GitHub](https://github.com/neovim/nvim-lspconfig) |
-| conform.nvim | Autoformat | [GitHub](https://github.com/stevearc/conform.nvim) |
-| nvim-cmp | Autocompletion | [GitHub](https://github.com/hrsh7th/nvim-cmp) |
-| copilot.lua | Github Copilot | [GitHub](https://github.com/zbirenbaum/copilot.lua) |
-| CopilotChat.nvim | Github Copilot Chat | [GitHub](https://github.com/CopilotC-Nvim/CopilotChat.nvim) |
-| undotree | Undo tree | [GitHub](https://github.com/jiaoshijie/undotree) |
-| monokai-pro.nvim | Monokai Pro colorscheme | [GitHub](https://github.com/loctvl842/monokai-pro.nvim) |
-| todo-comments.nvim | Highlight todo, notes, etc in comments | [GitHub](https://github.com/folke/todo-comments.nvim) |
-| mini.nvim | Collection of various small independent plugins/modules | [GitHub](https://github.com/echasnovski/mini.nvim) |
-| nvim-treesitter | Highlight, edit, and navigate code | [GitHub](https://github.com/nvim-treesitter/nvim-treesitter) |
+| Comment.nvim | Smart commenting (gc keybindings) | [GitHub](https://github.com/numToStr/Comment.nvim) |
+| vim-wakatime | Time tracking for coding | [GitHub](https://github.com/wakatime/vim-wakatime) |
+| vim-dbml | DBML syntax highlighting | [GitHub](https://github.com/marcopolo/dbml.vim) |
+| plenary.nvim | Lua utility library | [GitHub](https://github.com/nvim-lua/plenary.nvim) |
+| snacks.nvim | Input, picker, terminal utilities (opencode dependency) | [GitHub](https://github.com/folke/snacks.nvim) |
+
+Total: 39 plugins
 
 ## Acknowledgements
 
