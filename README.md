@@ -43,6 +43,28 @@ The configuration is organized into the following files and directories:
   - `colorscheme.lua` - Color scheme plugins (jb.nvim)
   - `utilities.lua` - Various utility plugins (vim-sleuth, Comment, wakatime, vim-dbml)
 
+## Core Settings
+
+The following core Neovim options are configured in `lua/config/options.lua`:
+
+- Leader key: Space
+- Line numbers: enabled (both absolute and relative)
+- Mouse mode: enabled
+- Show mode: disabled (shown in status line)
+- Clipboard: unnamedplus (sync with OS)
+- Break indent: enabled
+- Undo file: enabled
+- Search: case-insensitive, smart case, highlight on search
+- Sign column: always visible
+- Split configuration: new windows open right and below
+- List characters: tab and trailing spaces visible
+- Tab width: 4 spaces
+- Incremental command preview: enabled
+- Cursor line: highlighted
+- Scroll offset: 10 lines minimum
+- Timeout length: 2500ms
+- True color: enabled
+
 ## Keybindings
 
 > **Note:** The leader key is currently set to `<Space>`. You can change it by modifying the line `vim.g.mapleader = " "` in the `init.lua` file.
