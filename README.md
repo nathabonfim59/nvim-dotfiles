@@ -334,6 +334,43 @@ The following core Neovim options are configured in `lua/config/options.lua`:
 
 Total: 39 plugins
 
+## External Dependencies
+
+This configuration includes some optional external dependencies that enhance functionality. These tools are not required for the configuration to work, but corresponding features will be disabled if they are not installed.
+
+### lazygit
+
+- Purpose: Git interface
+- Required for: Git operations with LazyGit
+- Keybinding: `<leader>gg`
+- Installation: https://github.com/jesseduffield/lazygit
+- Note: Optional - the configuration will work without it, but the LazyGit keybinding will be disabled
+
+### jid
+
+- Purpose: JSON interactive debugger
+- Required for: Filtering JSON files in terminal
+- Keybinding: `<leader>ti`
+- Installation: https://github.com/simeji/jid
+- Note: Optional - the configuration will work without it, but the jid keybinding will be disabled
+
+### fd
+
+- Purpose: Fast file finder
+- Required for: Two-step grep feature in Telescope
+- Keybinding: `<leader>st`
+- Installation: https://github.com/sharkdp/fd
+- Note: Optional - the configuration will work without it, but the two-step grep feature will be disabled
+
+### make
+
+- Purpose: Build tool
+- Required for: Building telescope-fzf-native.nvim extension
+- Installation: Usually pre-installed on Unix systems
+- Note: Optional - the configuration will work without it, but telescope-fzf-native.nvim may not be compiled
+
+All external dependencies are optional and the configuration will work without them, but corresponding features will be disabled.
+
 ## Acknowledgements
 
 I would like to express my gratitude to the creators and maintainers of all the plugins used in this configuration. Your hard work and dedication have greatly enhanced the functionality and user experience of Neovim.
