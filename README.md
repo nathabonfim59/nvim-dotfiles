@@ -25,23 +25,23 @@ nvim
 
 The configuration is organized into the following files and directories:
 
-- `init.lua` - Main entry point that loads all configuration modules and initializes lazy.nvim
+- `init.lua` - Main entry point
 - `lua/config/` - Core Neovim settings
   - `options.lua` - Neovim options and settings
   - `keymaps.lua` - Keybindings and shortcuts
   - `autocmds.lua` - Automatic commands
 - `lua/plugins/` - Plugin configurations organized by category
-  - `init.lua` - Main plugin specification file that imports all other plugin configs
-  - `ai.lua` - AI-related plugins (Copilot, CopilotChat)
-  - `colorscheme.lua` - Color scheme plugins
-  - `completion.lua` - Autocompletion plugins
-  - `editing.lua` - Editing utilities and enhancements
-  - `git.lua` - Git integration plugins
-  - `lsp.lua` - Language Server Protocol configurations
+  - `init.lua` - Main plugin specification file
+  - `ai.lua` - AI-related plugins (opencode, copilot, 99)
+  - `git.lua` - Git integration plugins (gitsigns, neogit)
+  - `ui.lua` - UI enhancements (which-key, mini.nvim, undotree, flash, colorizer)
   - `telescope.lua` - Fuzzy finder configurations
+  - `lsp.lua` - LSP configurations (includes nvim-dbee, conform.nvim)
+  - `completion.lua` - Autocompletion plugins (blink.cmp, blink.compat, blink-cmp-avante)
+  - `editing.lua` - Editing utilities (harpoon, bookmarks, kulala)
   - `treesitter.lua` - Treesitter syntax highlighting
-  - `ui.lua` - UI enhancements and components
-  - `utilities.lua` - Various utility plugins
+  - `colorscheme.lua` - Color scheme plugins (jb.nvim)
+  - `utilities.lua` - Various utility plugins (vim-sleuth, Comment, wakatime, vim-dbml)
 
 ## Keybindings
 
