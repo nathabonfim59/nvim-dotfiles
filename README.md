@@ -5,7 +5,7 @@
 > Snippet from [Cerebras Code Monitor](https://github.com/nathabonfim59/cerebras-code-monitor)
 
 
-This repository contains my personal Neovim configuration, organized with [lazy.nvim](https://github.com/folke/lazy.nvim) plugin manager. The configuration is written in Lua and structured for maintainability and extensibility.
+This repository contains my personal Neovim configuration, organized with [lazy.nvim](https://github.com/folke/lazy.nvim) plugin manager. The configuration is written in Lua and structured for maintainability and extensibility. It includes AI-powered development tools including opencode.nvim, GitHub Copilot, and 99 for intelligent code assistance.
 
 ## Getting Started
 
