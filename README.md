@@ -84,56 +84,19 @@ The following core Neovim options are configured in `lua/config/options.lua`:
 
 | Keybinding | Description |
 |------------|-------------|
-| `[d` | Go to previous diagnostic message |
-| `]d` | Go to next diagnostic message |
+| `[d` | Go to previous diagnostic |
+| `]d` | Go to next diagnostic |
 | `<leader>e` | Show diagnostic error messages |
 | `<leader>qd` | Open diagnostic quickfix list |
 
-### Quickfix List Management
+### Quickfix Operations
 
 | Keybinding | Description |
 |------------|-------------|
 | `<leader>qD` | Delete current quickfix item |
 | `<leader>qd` (Visual mode) | Delete selected quickfix items |
-
-### Code Context
-
-| Keybinding | Description |
-|------------|-------------|
-| `<leader>ct` | Toggle code context display |
-
-### Database
-
-| Keybinding | Description |
-|------------|-------------|
-| `<leader>db` | Open database browser |
-
-### Harpoon (File Navigation)
-
-| Keybinding | Description |
-|------------|-------------|
-| `<leader>hh` | Toggle Harpoon menu |
-| `<leader>ha` | Add current file to Harpoon |
-| `<leader>hj` | Navigate to next Harpoon file |
-| `<leader>hk` | Navigate to previous Harpoon file |
-
-### Git Integration
-
-| Keybinding | Description |
-|------------|-------------|
-| `<leader>gs` | Stage current hunk |
-| `<leader>gp` | Preview current hunk |
-| `<leader>gr` | Reset current hunk |
-| `<leader>gj` | Go to next hunk |
-| `<leader>gk` | Go to previous hunk |
-| `<leader>gl` | Blame current line |
-| `<leader>gg` | Open LazyGit terminal interface (requires [lazygit](https://github.com/jesseduffield/lazygit) to be installed) |
-
-### JSON Filtering
-
-| Keybinding | Description |
-|------------|-------------|
-| `<leader>ti` | Open current file in jid JSON filter (requires [jid](https://github.com/simeji/jid) to be installed) |
+| `dd` (quickfix window) | Delete quickfix item |
+| `d` (Visual mode, quickfix window) | Delete selected quickfix items |
 
 ### Telescope (Fuzzy Finder)
 
@@ -153,6 +116,135 @@ The following core Neovim options are configured in `lua/config/options.lua`:
 | `<leader>/` | Fuzzily search in current buffer |
 | `<leader>s/` | Search in open files |
 | `<leader>sn` | Search Neovim configuration files |
+
+### LSP
+
+| Keybinding | Description |
+|------------|-------------|
+| `gd` | Go to definition |
+| `gr` | Go to references |
+| `gI` | Go to implementation |
+| `<leader>D` | Type definition |
+| `<leader>ds` | Document symbols |
+| `<leader>ws` | Workspace symbols |
+| `<leader>rn` | Rename symbol |
+| `<leader>ca` | Code action |
+| `K` | Hover documentation |
+| `gD` | Go to declaration |
+
+### Git
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>gs` | Stage current hunk |
+| `<leader>gp` | Preview current hunk |
+| `<leader>gr` | Reset current hunk |
+| `<leader>gj` | Next hunk |
+| `<leader>gk` | Previous hunk |
+| `<leader>gl` | Blame line |
+| `<leader>gg` | Open LazyGit |
+
+### AI Assistant - OpenCode
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>oa` | Ask opencode |
+| `<leader>oc` | Execute opencode action |
+| `<leader>oo` | Toggle opencode |
+| `<leader>oaa` | Add range to opencode |
+| `<leader>oal` | Add line to opencode |
+| `<S-C-u>` | Opencode half page up |
+| `<S-C-d>` | Opencode half page down |
+
+### AI Assistant - 99
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>9f` | Fill in function body |
+| `<leader>9v` (Visual mode) | Execute on visual selection |
+| `<leader>9s` (Visual mode) | Stop all requests |
+
+### File Navigation - Harpoon
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>hh` | Toggle Harpoon menu |
+| `<leader>ha` | Add file to Harpoon |
+| `<leader>hj` | Navigate to next Harpoon file |
+| `<leader>hk` | Navigate to previous Harpoon file |
+
+### File Navigation - Bookmarks
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>bb` | Toggle Bookmark Tree |
+| `<leader>ba` | Add Bookmark |
+| `<leader>bs` | Search Bookmarks |
+| `<leader>bl` | Show lists |
+| `<leader>bj` | Next Bookmark in current list |
+| `<leader>bk` | Previous Bookmark in current list |
+| `<leader>bJ` | Next Bookmark (global) |
+| `<leader>bK` | Previous Bookmark (global) |
+
+### Code Context
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>ct` | Toggle code context display |
+
+### Terminal
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>ti` | Open current file in jid JSON filter |
+| `<leader>yp` | Copy absolute path |
+
+### Flash Navigation
+
+| Keybinding | Description |
+|------------|-------------|
+| `s` | Flash jump |
+| `S` | Flash treesitter |
+| `r` (Operator mode) | Remote Flash |
+| `R` (Operator mode) | Treesitter Search |
+| `<C-s>` (Command mode) | Toggle Flash Search |
+
+### Copilot
+
+| Keybinding | Description |
+|------------|-------------|
+| `<M-y>` | Accept suggestion |
+| `<M-]>` | Next suggestion |
+| `<M-[>` | Previous suggestion |
+| `<C-]>` | Dismiss suggestion |
+
+### Formatting
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>f` | Format buffer |
+
+### Database
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>db` | Open database browser |
+
+### HTTP Requests - Kulala
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>Rs` | Send request |
+| `<leader>Ra` | Send all requests |
+| `<leader>Rb` | Open scratchpad |
+
+### Other Utilities
+
+| Keybinding | Description |
+|------------|-------------|
+| `<leader>H` | Toggle undotree |
+| `gc` (Visual mode) | Comment (visual selection) [Comment.nvim default] |
+| `gc` (Normal mode) | Comment (line) [Comment.nvim default] |
 
 ## Plugins
 
