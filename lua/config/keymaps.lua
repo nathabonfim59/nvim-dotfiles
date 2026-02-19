@@ -217,3 +217,7 @@ end, { desc = "[H]arpoon Next file" })
 vim.keymap.set("n", "<leader>hk", function()
 	require("harpoon.mark").nav_prev()
 end, { desc = "[H]arpoon prev file" })
+
+vim.keymap.set("n", "<leader>i", function()
+	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }), { bufnr = 0 })
+end, { desc = "Toggle [I]nlay hints" })
