@@ -221,3 +221,48 @@ end, { desc = "[H]arpoon prev file" })
 vim.keymap.set("n", "<leader>i", function()
 	vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }), { bufnr = 0 })
 end, { desc = "Toggle [I]nlay hints" })
+
+local function jump_in_cwd(direction)
+	local cwd = vim.fn.getcwd()
+	local jumps = vim.fn.getjumplist()
+	local jump_list = jumps[1]
+	local cur_idx = jumps[2]
+
+	local function feedkeys(keys)
+		vim.api.nvim_feedkeys(keys, "n", false)
+	end
+
+	if direction == "back" then
+		for i = cur_idx - 1, 0, -1 do
+			local jump = jump_list[i + 1]
+			if jump and jump.bufnr and jump.bufnr > 0 then
+				local path = vim.api.nvim_buf_get_name(jump.bufnr)
+				if path and path:sub(1, #cwd) == cwd then
+					local count = cur_idx - i
+					feedkeys(count .. vim.api.nvim_replace_termcodes("<C-o>", true, false, true))
+					return
+				end
+			end
+		end
+	else
+		for i = cur_idx + 1, #jump_list do
+			local jump = jump_list[i + 1]
+			if jump and jump.bufnr and jump.bufnr > 0 then
+				local path = vim.api.nvim_buf_get_name(jump.bufnr)
+				if path and path:sub(1, #cwd) == cwd then
+					local count = i - cur_idx
+					feedkeys(count .. vim.api.nvim_replace_termcodes("<C-i>", true, false, true))
+					return
+				end
+			end
+		end
+	end
+end
+
+vim.keymap.set("n", "<C-o>", function()
+	jump_in_cwd("back")
+end, { desc = "Jump back (restricted to cwd)" })
+
+vim.keymap.set("n", "<C-i>", function()
+	jump_in_cwd("forward")
+end, { desc = "Jump forward (restricted to cwd)" })
