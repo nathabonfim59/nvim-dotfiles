@@ -256,8 +256,12 @@ return {
 	},
 	{
 		"ThePrimeagen/99",
+		dependencies = {
+			{ "nvim-telescope/telescope.nvim", optional = true },
+		},
 		config = function()
 			local _99 = require("99")
+			local Worker = require("99.extensions.work.worker")
 
 			-- For logging that is to a file if you wish to trace through requests
 			-- for reporting bugs, i would not rely on this, but instead the provided
@@ -265,15 +269,21 @@ return {
 			local cwd = vim.uv.cwd()
 			local basename = vim.fs.basename(cwd)
 			_99.setup({
+				-- provider = _99.Providers.ClaudeCodeProvider,  -- default: OpenCodeProvider
 				logger = {
 					level = _99.DEBUG,
 					path = "/tmp/" .. basename .. ".99.debug",
 					print_on_error = true,
 				},
+				-- When setting this to something that is not inside the CWD tools
+				-- such as claude code or opencode will have permission issues
+				-- and generation will fail refer to tool documentation to resolve
+				-- https://opencode.ai/docs/permissions/#external-directories
+				-- https://code.claude.com/docs/en/permissions#read-and-edit
+				tmp_dir = "./tmp",
 
-				--- A new feature that is centered around tags
+				--- Completions: #rules and @files in the prompt buffer
 				completion = {
-					--- Defaults to .cursor/rules
 					-- I am going to disable these until i understand the
 					-- problem better.  Inside of cursor rules there is also
 					-- application rules, which means i need to apply these
@@ -296,9 +306,20 @@ return {
 						"scratch/custom_rules/",
 					},
 
-					--- What autocomplete do you use.  We currently only
-					--- support cmp right now
-					source = "cmp",
+					--- Configure @file completion (all fields optional, sensible defaults)
+					files = {
+						-- enabled = true,
+						-- max_file_size = 102400,     -- bytes, skip files larger than this
+						-- max_files = 5000,            -- cap on total discovered files
+						-- exclude = { ".env", ".env.*", "node_modules", ".git", ... },
+					},
+					--- File Discovery:
+					--- - In git repos: Uses `git ls-files` which automatically respects .gitignore
+					--- - Non-git repos: Falls back to filesystem scanning with manual excludes
+					--- - Both methods apply the configured `exclude` list on top of gitignore
+
+					--- What autocomplete engine to use. Defaults to native (built-in) if not specified.
+					source = "blink", -- "native" (default), "cmp", or "blink"
 				},
 
 				--- WARNING: if you change cwd then this is likely broken
@@ -318,9 +339,7 @@ return {
 
 			-- Create your own short cuts for the different types of actions
 			vim.keymap.set("n", "<leader>9", "", { desc = "99" })
-			vim.keymap.set("n", "<leader>9f", function()
-				_99.fill_in_function()
-			end, { desc = "Fill in function body" })
+
 			-- take extra note that i have visual selection only in v mode
 			-- technically whatever your last visual selection is, will be used
 			-- so i have this set to visual mode so i dont screw up and use an
@@ -333,17 +352,68 @@ return {
 			end, { desc = "Execute on visual selection" })
 
 			--- if you have a request you dont want to make any changes, just cancel it
-			vim.keymap.set("v", "<leader>9s", function()
+			vim.keymap.set("n", "<leader>9x", function()
 				_99.stop_all_requests()
 			end, { desc = "Stop all requests" })
 
-			--- Example: Using rules + actions for custom behaviors
-			--- Create a rule file like ~/.rules/debug.md that defines custom behavior.
-			--- For instance, a "debug" rule could automatically add printf statements
-			--- throughout a function to help debug its execution flow.
-			vim.keymap.set("n", "<leader>9fd", function()
-				_99.fill_in_function()
-			end, { desc = "Fill in function (debug)" })
+			vim.keymap.set("n", "<leader>9s", function()
+				_99.search()
+			end, { desc = "Search project with AI" })
+
+			-- Vibe - Agentic coding mode
+			vim.keymap.set("n", "<leader>9b", function()
+				_99.vibe()
+			end, { desc = "Vibe mode (agentic coding)" })
+
+			-- Tutorial - Create AI tutorials
+			vim.keymap.set("n", "<leader>9t", function()
+				_99.tutorial()
+			end, { desc = "Create AI tutorial" })
+
+			-- Open - Browse previous requests
+			vim.keymap.set("n", "<leader>9o", function()
+				_99.open()
+			end, { desc = "Open previous requests" })
+
+			-- View logs
+			vim.keymap.set("n", "<leader>9l", function()
+				_99.view_logs()
+			end, { desc = "View 99 logs" })
+
+			-- Clear previous requests
+			vim.keymap.set("n", "<leader>9c", function()
+				_99.clear_previous_requests()
+			end, { desc = "Clear previous requests" })
+
+			-- Info - Show active rules and request counts
+			vim.keymap.set("n", "<leader>9i", function()
+				_99.info()
+			end, { desc = "99 info" })
+
+			-- Worker - Task tracking
+			vim.keymap.set("n", "<leader>9w", function()
+				Worker.set_work()
+			end, { desc = "Set work item" })
+
+			vim.keymap.set("n", "<leader>9r", function()
+				Worker.search()
+			end, { desc = "Search for remaining work" })
+
+			vim.keymap.set("n", "<leader>9rv", function()
+				Worker.vibe()
+			end, { desc = "Vibe remaining work" })
+
+			-- Model and Provider selection via Telescope
+			local has_telescope, _ = pcall(require, "telescope")
+			if has_telescope then
+				vim.keymap.set("n", "<leader>9m", function()
+					require("99.extensions.telescope").select_model()
+				end, { desc = "Select AI model" })
+
+				vim.keymap.set("n", "<leader>9p", function()
+					require("99.extensions.telescope").select_provider()
+				end, { desc = "Select AI provider" })
+			end
 		end,
 	},
 }
