@@ -1,12 +1,26 @@
 return {
-	-- Highlight, edit, and navigate code
+	-- Treesitter parser and query installer
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		main = "nvim-treesitter",
-		opts = {
-			ensure_installed = { "bash", "c", "html", "lua", "luadoc", "markdown", "vim", "vimdoc" },
-		},
+		opts = {},
+		-- Install parsers after setup
+		config = function(_, opts)
+			require("nvim-treesitter").setup(opts)
+			-- Install parsers asynchronously
+			require("nvim-treesitter").install({
+				"bash",
+				"c",
+				"html",
+				"lua",
+				"luadoc",
+				"markdown",
+				"vim",
+				"vimdoc",
+				"svelte",
+			})
+		end,
 	},
 	-- Sticky scroll context (with treesitter)
 	{
@@ -14,4 +28,3 @@ return {
 		dependencies = "nvim-treesitter/nvim-treesitter",
 	},
 }
-

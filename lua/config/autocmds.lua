@@ -101,3 +101,33 @@ vim.cmd([[
   autocmd BufEnter *.astro lua vim.api.nvim_buf_set_option(0, 'syntax', 'astro')
   augroup END
 ]])
+
+-- Enable treesitter highlighting for supported filetypes
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = {
+		"bash",
+		"c",
+		"html",
+		"lua",
+		"luadoc",
+		"markdown",
+		"vim",
+		"vimdoc",
+		"svelte",
+		"javascript",
+		"typescript",
+		"tsx",
+		"jsx",
+		"css",
+		"json",
+		"yaml",
+		"python",
+		"rust",
+		"go",
+		"toml",
+	},
+	callback = function()
+		vim.treesitter.start()
+	end,
+	desc = "Enable treesitter highlighting",
+})
