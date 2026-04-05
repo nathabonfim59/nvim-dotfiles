@@ -19,6 +19,7 @@ return {
 				"vim",
 				"vimdoc",
 				"svelte",
+				"go",
 			})
 		end,
 	},
