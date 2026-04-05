@@ -1,5 +1,8 @@
 # Neovim Configuration
 
+> [!WARNING]
+> This configuration requires **Neovim 0.12.x or above** to work properly, as it uses new Neovim APIs that are not available in older versions.
+
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/280c8c88-48c7-4485-8f3b-345389e3bc5f" />
 
  > Snippet from Cerebras Code Monitor (https://github.com/nathabonfim59/cerebras-code-monitor)
