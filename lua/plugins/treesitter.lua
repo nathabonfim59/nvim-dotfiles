@@ -1,15 +1,11 @@
-return {
+	return {
 	-- Treesitter parser and query installer
 	{
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		main = "nvim-treesitter",
-		opts = {},
-		-- Install parsers after setup
-		config = function(_, opts)
-			require("nvim-treesitter").setup(opts)
-			-- Install parsers asynchronously
-			require("nvim-treesitter").install({
+		opts = {
+			ensure_installed = {
 				"bash",
 				"c",
 				"html",
@@ -20,8 +16,8 @@ return {
 				"vimdoc",
 				"svelte",
 				"go",
-			})
-		end,
+			},
+		},
 	},
 	-- Sticky scroll context (with treesitter)
 	{
