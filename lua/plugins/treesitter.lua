@@ -1,4 +1,4 @@
-	return {
+return {
 	-- Treesitter parser and query installer
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -20,6 +20,7 @@
 				"typescript",
 				"tsx",
 				"jsdoc",
+				"json",
 			},
 		},
 	},
