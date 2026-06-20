@@ -30,12 +30,12 @@ vim.g.fff = {
 }
 
 -- Keymaps
-vim.keymap.set("n", "<leader>ff", function()
+vim.keymap.set("n", "<leader>sf", function()
 	require("fff").find_files()
-end, { desc = "[F]ind [F]iles" })
-vim.keymap.set("n", "<leader>fg", function()
+end, { desc = "[S]earch [F]iles" })
+vim.keymap.set("n", "<leader>sg", function()
 	require("fff").live_grep()
-end, { desc = "[F]ind [G]rep" })
-vim.keymap.set("n", "<leader>fc", function()
+end, { desc = "[S]earch [G]rep" })
+vim.keymap.set("n", "<leader>sw", function()
 	require("fff").live_grep({ query = vim.fn.expand("<cword>") })
-end, { desc = "[F]ind [C]urrent word" })
+end, { desc = "[S]earch [W]ord" })
