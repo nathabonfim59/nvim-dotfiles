@@ -1,5 +1,8 @@
 # Neovim Configuration
 
+> [!NOTE]
+> Looking for something minimal? Check out the [`micro`](../../tree/micro) branch for a lightweight version of this config.
+
 > [!WARNING]
 > This configuration requires **Neovim 0.12.x or above** to work properly, as it uses new Neovim APIs that are not available in older versions.
 
