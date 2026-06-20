@@ -41,3 +41,6 @@ vim.keymap.set("n", "<leader>gg", function()
 		print("LazyGit is not installed on this system.")
 	end
 end, { desc = "[G]it - Open Lazy[g]it" })
+
+-- Plugins
+require("plugins")
