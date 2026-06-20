@@ -1,49 +1,43 @@
--- Load configuration modules
-require("config.options")
-require("config.keymaps")
-require("config.autocmds")
+-- Minimal Neovim configuration
 
--- [[ Install `lazy.nvim` plugin manager ]]
---    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-	vim.fn.system({ "git", "clone", "--filter=blob:none", "--branch=stable", lazyrepo, lazypath })
-end ---@diagnostic disable-next-line: undefined-field
-vim.opt.rtp:prepend(lazypath)
+-- Set <space> as the leader key (must be set before plugin/loading logic)
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
--- [[ Configure and install plugins ]]
---
---  To check the current status of your plugins, run
---    :Lazy
---
---  You can press `?` in this menu for help. Use `:q` to close the window
---
---  To update plugins you can run
---    :Lazy update
---
--- NOTE: Here is where you install your plugins.
-require("lazy").setup("plugins", {
-	ui = {
-		-- If you are using a Nerd Font: set icons to an empty table which will use the
-		-- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
-		icons = vim.g.have_nerd_font and {} or {
-			cmd = "⌘",
-			config = "🛠",
-			event = "📅",
-			ft = "📂",
-			init = "⚙",
-			keys = "🗝",
-			plugin = "🔌",
-			runtime = "💻",
-			require = "🌙",
-			source = "📄",
-			start = "🚀",
-			task = "📌",
-			lazy = "💤 ",
-		},
-	},
-})
+-- Open LazyGit in a terminal within neovim
+vim.keymap.set("n", "<leader>gg", function()
+	local handle = io.popen("which lazygit")
 
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
+	if handle == nil then
+		return
+	end
+
+	local result = handle:read("*a")
+	handle:close()
+
+	-- If the `which` command returned a result, LazyGit is installed
+	if result ~= "" then
+		-- Open LazyGit within a terminal in neovim
+		vim.api.nvim_command("tabnew")
+		vim.api.nvim_command("silent terminal lazygit")
+
+		-- Redraw the terminal to fix resizing issue
+		vim.api.nvim_command("redraw!")
+
+		-- Remove line numbers
+		vim.api.nvim_command("set nonumber")
+		vim.api.nvim_command("set norelativenumber")
+
+		-- Start in insert mode
+		vim.api.nvim_command("startinsert")
+
+		-- When the terminal process exits, close the buffer
+		vim.api.nvim_command("autocmd TermClose <buffer> bd!")
+
+		-- When exit, remove from recent buffers
+		vim.api.nvim_command("autocmd BufLeave <buffer> bd!")
+	else
+		-- If LazyGit is not installed, print a message to the console
+		print("LazyGit is not installed on this system.")
+	end
+end, { desc = "[G]it - Open Lazy[g]it" })
