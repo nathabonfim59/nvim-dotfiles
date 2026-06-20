@@ -15,6 +15,10 @@ local options = {
 	-- Show invisible characters (tabs, trailing whitespace, etc.) so real
 	-- tabs are visible. See :help 'list', :help 'listchars'
 	list = true,
+
+	-- Yank/delete/paste to the system clipboard. See :help 'clipboard',
+	-- :help clipboard-unnamed, :help clipboard-unnamedplus
+	clipboard = "unnamed,unnamedplus",
 }
 
 for key, value in pairs(options) do
