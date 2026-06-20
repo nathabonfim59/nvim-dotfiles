@@ -5,17 +5,16 @@
 vim.pack.add({
 	{
 		src = "https://github.com/dmtrKovalenko/fff.nvim",
-		-- Pin to a version tag once stable; omitted to follow default branch
 	},
 })
 
--- fff.nvim ships a prebuilt binary; build it on install/update.
+-- fff.nvim ships a prebuilt binary; build it on install.
 -- Triggered via the standard `PackChanged` event emitted by vim.pack.
 vim.api.nvim_create_autocmd("PackChanged", {
 	group = vim.api.nvim_create_augroup("fff-install", { clear = true }),
 	callback = function(ev)
 		local name, kind = ev.data.spec.name, ev.data.kind
-		if name == "fff.nvim" and (kind == "install" or kind == "update") then
+		if name == "fff.nvim" and kind == "install" then
 			if not ev.data.active then
 				vim.cmd.packadd("fff.nvim")
 			end
